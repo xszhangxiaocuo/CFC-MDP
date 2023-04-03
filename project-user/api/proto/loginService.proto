@@ -1,0 +1,18 @@
+syntax = "proto3";
+package login;
+option go_package="project-user/api/proto/gen";
+
+service LoginService{
+  rpc Login(LoginRequest) returns (LoginResponse){}
+}
+
+message LoginRequest{
+  string account = 1;
+  string password = 2;
+  string token = 3;
+  string ip = 4;
+}
+
+message LoginResponse{
+  string result = 1;
+}
