@@ -1,0 +1,6 @@
+server:
+  name: "project-user"
+  addr: "127.0.0.1:6659"
+etcd:
+  addrs:
+    - "192.168.1.151:2379"

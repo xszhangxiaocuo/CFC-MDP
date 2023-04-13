@@ -5,4 +5,5 @@ use (
 	./project-common
 	./project-service
 	./project-user
+	project-grpc
 )
