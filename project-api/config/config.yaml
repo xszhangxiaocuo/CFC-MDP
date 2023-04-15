@@ -1,0 +1,6 @@
+server:
+  name: "project-api"
+  addr: "127.0.0.1:80"
+etcd:
+  addrs:
+    - "192.168.1.151:2379"

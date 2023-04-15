@@ -1,20 +1,27 @@
 package config
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"log"
 	"os"
 )
 
-var AppConfig = InitConfig()
+var AppConf = InitConfig()
 
 type Config struct {
 	viper        *viper.Viper
 	ServerConfig *ServerConfig
+	GrpcConfig   *GrpcConfig
 	EtcdConfig   *EtcdConfig
 }
 
 type ServerConfig struct {
+	Name string
+	Addr string
+}
+
+type GrpcConfig struct {
 	Name string
 	Addr string
 }
@@ -25,7 +32,8 @@ type EtcdConfig struct {
 
 func InitConfig() *Config {
 	conf := &Config{viper: viper.New()}
-	workDir, _ := os.Getwd() //当前工作路径
+	workDir, _ := os.Getwd()
+	fmt.Println(workDir)
 	conf.viper.SetConfigName("config")
 	conf.viper.SetConfigType("yaml")
 	conf.viper.AddConfigPath(workDir + "/config")
@@ -33,10 +41,8 @@ func InitConfig() *Config {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	conf.InitServerConfig()
 	conf.InitEtcdConfig()
-
 	return conf
 }
 
@@ -50,9 +56,9 @@ func (c *Config) InitServerConfig() {
 func (c *Config) InitEtcdConfig() {
 	ec := &EtcdConfig{}
 	var addrs []string
-	err := c.viper.UnmarshalKey("etcd.addrs", addrs)
+	err := c.viper.UnmarshalKey("etcd.addrs", &addrs)
 	if err != nil {
-		log.Fatalln("init etcd failed: ", err)
+		log.Fatalln("init Etcd Config err: ", err)
 	}
 	ec.Addrs = addrs
 	c.EtcdConfig = ec

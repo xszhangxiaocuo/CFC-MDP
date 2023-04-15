@@ -9,7 +9,7 @@ import (
 // 初始化注册用户模块路由
 func init() {
 	log.Println("init user router")
-	router.Register()
+	router.Register(&UserRouter{})
 }
 
 type UserRouter struct {
@@ -17,13 +17,12 @@ type UserRouter struct {
 
 // Route 用户模块路由注册
 func (*UserRouter) Route(r *gin.Engine) {
+	//初始化grpc客户端连接
+	InitRpcUserClient()
 	uh := NewUserHandler()
-	//注册路由组
-	group := r.Group("/CFC-MDP")
 	//为路由组注册中间件
 	//group.Use(Auth())
 	{
-		group.POST("/login", uh.login)
-
+		r.POST("/login", uh.login)
 	}
 }
