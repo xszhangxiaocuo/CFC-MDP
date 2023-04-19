@@ -6,12 +6,14 @@ import (
 	"os"
 )
 
-var AppConfig = InitConfig()
+var AppConf = InitConfig()
 
 type Config struct {
 	viper        *viper.Viper
 	ServerConfig *ServerConfig
 	EtcdConfig   *EtcdConfig
+	GrpcConfig   *GrpcConfig
+	MysqlConfig  *MysqlConfig
 }
 
 type ServerConfig struct {
@@ -21,6 +23,21 @@ type ServerConfig struct {
 
 type EtcdConfig struct {
 	Addrs []string
+}
+
+type GrpcConfig struct {
+	Name    string
+	Addr    string
+	Version string
+	Weight  int64
+}
+
+type MysqlConfig struct {
+	Username string
+	Password string
+	Host     string
+	Port     int
+	Db       string
 }
 
 func InitConfig() *Config {
@@ -36,6 +53,8 @@ func InitConfig() *Config {
 
 	conf.InitServerConfig()
 	conf.InitEtcdConfig()
+	conf.InitGrpcConfig()
+	conf.InitMySqlConfig()
 
 	return conf
 }
@@ -50,10 +69,29 @@ func (c *Config) InitServerConfig() {
 func (c *Config) InitEtcdConfig() {
 	ec := &EtcdConfig{}
 	var addrs []string
-	err := c.viper.UnmarshalKey("etcd.addrs", addrs)
+	err := c.viper.UnmarshalKey("etcd.addrs", &addrs)
 	if err != nil {
 		log.Fatalln("init etcd failed: ", err)
 	}
 	ec.Addrs = addrs
 	c.EtcdConfig = ec
+}
+
+func (c *Config) InitGrpcConfig() {
+	gc := &GrpcConfig{}
+	gc.Addr = c.viper.GetString("grpc.addr")
+	gc.Name = c.viper.GetString("grpc.name")
+	gc.Version = c.viper.GetString("grpc.version")
+	gc.Weight = c.viper.GetInt64("grpc.weight")
+	c.GrpcConfig = gc
+}
+
+func (c *Config) InitMySqlConfig() {
+	ms := &MysqlConfig{}
+	ms.Username = c.viper.GetString("mysql.username")
+	ms.Password = c.viper.GetString("mysql.password")
+	ms.Host = c.viper.GetString("mysql.host")
+	ms.Port = c.viper.GetInt("mysql.port")
+	ms.Db = c.viper.GetString("mysql.db")
+	c.MysqlConfig = ms
 }

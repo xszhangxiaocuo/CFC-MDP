@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/xszhangxiaocuo/CFC-MDP/project-api/api/pkg/model/user"
 	"github.com/xszhangxiaocuo/CFC-MDP/project-grpc/user/login"
+	"log"
 	"net/http"
 	"time"
 
@@ -24,6 +25,7 @@ func (uh *UserHandler) login(ctx *gin.Context) {
 	var req user.LoginReq
 	err := ctx.ShouldBind(&req)
 	if err != nil {
+		log.Println("parameter err")
 		ctx.JSON(http.StatusOK, resp.Fail(http.StatusBadRequest, "参数错误"))
 		return
 	}
@@ -34,11 +36,11 @@ func (uh *UserHandler) login(ctx *gin.Context) {
 		Account:  req.Account,
 		Password: req.Password,
 	}
-	loginRpcResp, err := LoginServiceClient.Login(c, rpcReq)
+	_, err = LoginServiceClient.Login(c, rpcReq)
 	if err != nil {
-		ctx.JSON(http.StatusOK, err)
+		log.Println("login failed")
+		ctx.JSON(http.StatusOK, resp.Fail(common.LOGINFAILED, err.Error()))
 		return
 	}
-	_ = loginRpcResp
 	ctx.JSON(http.StatusOK, resp.Success(""))
 }

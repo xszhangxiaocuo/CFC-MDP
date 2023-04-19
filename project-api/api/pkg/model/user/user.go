@@ -6,4 +6,5 @@ type LoginReq struct {
 }
 
 type LoginRsp struct {
+	code string `json:"code"`
 }
