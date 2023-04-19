@@ -18,12 +18,10 @@ type ServiceRouter struct {
 // Route 服务模块路由注册
 func (*ServiceRouter) Route(r *gin.Engine) {
 	sh := NewServiceHandler()
-	//注册路由组
-	group := r.Group("/CFC-MDP")
 	//为路由组注册中间件
 	//group.Use(Auth())
 	{
-		group.POST("/index", sh.index)
+		r.POST("/index", sh.index)
 
 	}
 }

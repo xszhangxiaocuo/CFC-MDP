@@ -1,0 +1,17 @@
+server:
+  name: "project-user"
+  addr: "127.0.0.1:8082"
+etcd:
+  addrs:
+    - "192.168.1.151:2379"
+grpc:
+  addr: "127.0.0.1:8882"
+  name: "user"
+  version: "1.0.0"
+  weight: 100
+mysql:
+  username: "xszxc"
+  password: "Qaz6659644."
+  host: "gz-cynosdbmysql-grp-diyqqtkv.sql.tencentcdb.com"
+  port: 23946
+  db: "mdp_user"
