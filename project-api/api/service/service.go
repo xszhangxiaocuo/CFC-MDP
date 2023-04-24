@@ -14,6 +14,22 @@ func NewServiceHandler() *ServiceHandler {
 	return &ServiceHandler{}
 }
 
-func (sh *ServiceHandler) index(ctx *gin.Context) {
+func (sh *ServiceHandler) save(ctx *gin.Context) {
+
+}
+
+func (sh *ServiceHandler) getList(ctx *gin.Context) {
+
+}
+
+func (sh *ServiceHandler) send(ctx *gin.Context) {
+
+}
+
+func (sh *ServiceHandler) getTemplate(ctx *gin.Context) {
+
+}
+
+func (sh *ServiceHandler) modifyTemplate(ctx *gin.Context) {
 
 }
